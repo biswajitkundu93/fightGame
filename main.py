@@ -91,6 +91,7 @@ class Fighter():
         self.potions = potions
         self.start_potions = potions
         self.alive = True 
+        self.backup = (x,y)
 
         self.animation_list = []
         self.action = 0 
@@ -149,6 +150,7 @@ class Fighter():
                 self.frame_index = len(self.animation_list[self.action])-1
             else : 
                 self.idle()
+                self.rect.center = self.backup
 
     
     def idle(self):
@@ -175,7 +177,10 @@ class Fighter():
         self.update_time = pygame.time.get_ticks()       
 
     def attack(self, target):
-        # self.rect.center = target.rect.center
+        if target.rect.center[0] > 500:
+            self.rect.center = (target.rect.center[0]-30,target.rect.center[1])
+        else: 
+            self.rect.center = (target.rect.center[0]+30,target.rect.center[1])
         rand = random.randint(-5,5)
         damge = self.strength + rand
         target.hp -= damge
